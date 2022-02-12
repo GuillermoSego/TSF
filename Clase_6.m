@@ -16,7 +16,7 @@ samples = [
   10.1,  9.8;
    8.5,  9.2; ];
 %%
-% Función dedicada
+% En clases pasadas
 S = cov( samples );
 l = [1.4465, 0.0864];
  
@@ -29,28 +29,9 @@ a = -t(2,2) / t(2,1);
 U = [ U, [a; 1] / sqrt( 1 + a^2 ) ];
 
 %% 
-% El equivalente en nuestro caso es
-z = (samples - repmat(mean(samples), size(samples, 1), 1 ) ) * U;
-z
-%%
-% La covarianza de estos datos es igual a
-cov(z)
-%% Algunas propiedades del principal components
-U' * S * U
-%%
-% Analisis multivariado de resumen de los resultados como
-% Calculamos el determinante de S
-det(S)
-%%
-det(S)
-det( [l(1), 0; 0, l(2)] )
-%%
-trace(S)
-trace( [l(1),0; 0,l(2)] )
-%%
-U.* sqrt( repmat(l,2,1) ./ repmat( diag(S),1,2  ) );
-U
-%% Aqui empieza la clase 6
+% Existen dos maneras de escalar los componentes principales. Una
+% reescalando las variables originales (Cap 3), y otra escalando los vectoes
+% caracterísiticos lo cual veremos a continuación.
 V = U * sqrt([l(1),0; 0,l(2)]);
 V
 %%

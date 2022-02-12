@@ -52,16 +52,17 @@ S
 % Es mucho mas eficiente hacer ciclos que matrices, porque cuando 
 % se hacen matrices se gasta mucha memoria. 
 
-%% Implementamos el método
+%% Implementamos el método PCA
 S = cov(samples);
 %%
 % Introducimos lo eigenvalores
 l = [1.4465, 0.0864];
 %%
-% Operamos el primer eigenvector
+% Operamos el primer eigenvector. eye es la matriz identidad.
 t = (S - eye(2) * l(1));
 a = -t(1,1)/t(1,2);
 U = [1;a] / sqrt(1+a^2);
+U
 %%
 % Calculamos el segundo eigenvector
 t = (S - eye(2) * l(2));
