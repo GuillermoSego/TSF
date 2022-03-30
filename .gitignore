@@ -1,0 +1,10 @@
+#Ignora los archivos de texto
+*.csv
+
+#Ignora los archivos de texto
+*.txt
+
+#Ignora los archivos de texto
+*.dat
+
+
