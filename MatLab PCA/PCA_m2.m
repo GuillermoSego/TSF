@@ -5,7 +5,7 @@
 %% Guardar los datos en una celda
 % 
 
-arch = dir("*.csv");
+arch = dir('..\*.csv');
 
 ST = size(arch, 1);
 
@@ -14,7 +14,7 @@ dim = zeros(ST,1);
 
 for i=1:size(arch, 1)
 
-    datos{i} = csvread(arch(i).name, 1, 0);
+    datos{i} = csvread(['..\' arch(i).name], 1, 0);
     datos{i} = datos{i}(:,2:3);   
 
     dim(i) = size(datos{i}, 1);    
@@ -84,7 +84,7 @@ eig(cov(Mscale));
 % Ahora vamos a graficar los datos reduciendo la dimensionalidad ya que
 % tenemos 4 dimensiones.
 
-% Usualmente se le conoce como grafica de los scores
+% Usualmente se le conoce como grafica de los scores, loading plot
 plot(z1, z2, 'o');
 
 %Observamos si se forman grupo a partir de análisis
@@ -99,7 +99,7 @@ indexo = find( disto(:,2)>= 100 );
 
 index = disto(indexo, 1);
 
-M(index,:)
+M(index,:);
 
 %% ¿Qué variables asociamos a cada componente principal?
 % Esta grafica típicamente se conoce como gráfica de PCA
