@@ -6,7 +6,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}\\build\\${fileBasenameNoExtension}.exe",
-      "args": [".\\input\\Jackson.csv","1"],
+      "args": [".\\Jackson.csv","1"],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [ ],

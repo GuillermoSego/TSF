@@ -3,12 +3,14 @@ OBJECT_DIR = .\\build\\Debug
 TARGET_DIR = .\\build
 
 # Target name
-LINK_TARGET = .\build\MatrixProduct.exe
+LINK_TARGET = .\build\CovCsv.exe
 
 # Macro with object files
 _OBJS =  \
  Matrix.o \
- MatrixProduct.o 
+ Open.o \
+ Statistics.o \
+ CovCsv.o \
 
 OBJS = $(patsubst %,$(OBJECT_DIR)\\%,$(_OBJS))
 
@@ -24,8 +26,10 @@ $(OBJECT_DIR)\\%.o : %.c
 	gcc -g -o $@ -c $<
 
 # Dependency Rules
-$(OBJECT_DIR)\\MatrixProduct.o : MatrixProduct.c Matrix.h
+$(OBJECT_DIR)\\CovCsv.o : CovCsv.c Matrix.h Statistics.h Open.h
 $(OBJECT_DIR)\\Matrix.o : Matrix.c Matrix.h
+$(OBJECT_DIR)\\Matrix.o : Open.c Open.h
+$(OBJECT_DIR)\\Matrix.o : Statistics.c Statistics.h
 
 # Cleaning files
 REBUILDABLES = $(OBJS) $(LINK_TARGET)
