@@ -3,14 +3,14 @@ OBJECT_DIR = .\\build\\Debug
 TARGET_DIR = .\\build
 
 # Target name
-LINK_TARGET = .\build\CovCsv.exe
+LINK_TARGET = .\build\PowerMethod.exe
 
 # Macro with object files
 _OBJS =  \
  Matrix.o \
  Open.o \
  Statistics.o \
- CovCsv.o \
+ PowerMethod.o \
 
 OBJS = $(patsubst %,$(OBJECT_DIR)\\%,$(_OBJS))
 
@@ -26,7 +26,7 @@ $(OBJECT_DIR)\\%.o : %.c
 	gcc -g -o $@ -c $<
 
 # Dependency Rules
-$(OBJECT_DIR)\\CovCsv.o : CovCsv.c Matrix.h Statistics.h Open.h
+$(OBJECT_DIR)\\CovCsv.o : PowerMethod.c Matrix.h Statistics.h Open.h
 $(OBJECT_DIR)\\Matrix.o : Matrix.c Matrix.h
 $(OBJECT_DIR)\\Matrix.o : Open.c Open.h
 $(OBJECT_DIR)\\Matrix.o : Statistics.c Statistics.h
