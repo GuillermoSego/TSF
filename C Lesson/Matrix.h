@@ -15,8 +15,12 @@ void MatrixProduct(double m1[], double m2[], double Matrix[], int M, int N, int 
 
 double maximus(double v[], int s);
 
-void MatrixSum(double in[], double out[], int n);
+void Initialize(double in[], int n);
+
+void Sum(double in[], double out[], int n);
 
 void Ones(double t[], int n);
 
 void Divide(double matrix[], double scalar, double out[], int s);
+
+void MatrixSum(double m1[], double m2[], double mout[], int n);

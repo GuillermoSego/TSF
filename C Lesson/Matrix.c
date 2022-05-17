@@ -62,12 +62,17 @@ void MatrixT(int n, int m, double v[], double Vec[] )
 // Esta rutina calcula el producto punto entre dos vectores
 double DotProd(double x[], double y[], int n)
 {
-    double sum = *(x++) * *(y ++ );
-    --n ;
+    
+    double* xPtr = x;
+    double* yPtr = y;
+    
+    double sum = 0;
+    int i=0;
     
     do {
-        sum += *( x++ ) * *(y ++ );
-    } while (--n);
+        sum += *( xPtr++ ) * *(yPtr ++ );
+        i ++;
+    } while (i<n);
     
     return sum;
 }
@@ -177,9 +182,28 @@ double maximus(double v[], int s)
     
 }
 
-// Este programa suma todos los elementos de un vector, y los pone en otro vec
-void MatrixSum(double in[], double out[], int n)
+void Initialize(double in[], int n)
 {
+
+  double* inPtr = in;
+  int i = 0;
+
+  do {
+
+    *inPtr = 0;
+    inPtr ++;
+
+    i ++;
+
+  } while(i<n);
+
+}
+
+// Este programa suma todos los elementos de un vector, y los pone en otro vec
+void Sum(double in[], double out[], int n)
+{
+
+  Initialize(out, n*n);
 
   double sum = 0;
   // Apuntamos
@@ -245,5 +269,28 @@ void Divide(double matrix[], double scalar, double out[], int s)
     i ++;
 
   } while( i < s );
+
+}
+
+// Esta rutina calcula la suma de dos matrices cuadradas
+void MatrixSum(double m1[], double m2[], double mout[], int n)
+{
+
+  double* m1Ptr = m1;
+  double* m2Ptr = m2;
+  double* outPtr = mout;
+
+  int i = 0;
+
+  do {
+
+    *outPtr = *m1Ptr - *m2Ptr;
+    m2Ptr ++;
+    m1Ptr ++;
+    outPtr ++;
+
+    i ++;
+
+  } while( i < (n*n) );
 
 }

@@ -67,7 +67,7 @@ int* OpenCSV(char* arg, double DatV[], int BF)
   
   // Creamos un contador igual al número de columnas
   // Declaramos el parámetro adicional para la función sscanf
-  int i = column, length;
+  int i = column, length = 0;
  
   // Leemos el primer renglon 
 

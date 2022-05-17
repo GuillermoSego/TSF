@@ -11,7 +11,7 @@
 int main(int nArg, char *arg[])
 {
 
-    /*
+/*
  
       Declaramos un vector en el que vamos a guardar los datos.
       Le apuntamos dos veces.
@@ -30,7 +30,6 @@ int main(int nArg, char *arg[])
  
     // Declaramos un nuevo vector en el que guardaremos la transpuesta 
     double DatM[ST*SA];
-    double* DatTPtr = DatM;
     
     // Determinamos la transpuesta
     MatrixT(SA, ST, VecM, DatM);
@@ -77,15 +76,16 @@ int main(int nArg, char *arg[])
     double* UPtr = U;
 
     double v[ST*ST];
+    double vprime[ST];
+    double vvp[ST*ST];
     double* vPtr = v;
 
     double l[ST];
     double* lPtr = l;
     
-    // Declaramos un nuevo vector en el que guardaremos la de transpuesta de S
-    double Sprime[ST*SA];
-    double* SprimePtr = Sprime;
-    MatrixT(ST, ST, CovM, Sprime);
+    // Declaramos un nuevo vector en el que guardaremos la nueva S
+    double Snew[ST*ST];
+    Divide(CovM, 1, Snew, ST*ST);
 
     // El error
     double e = 0.01;
@@ -95,7 +95,7 @@ int main(int nArg, char *arg[])
     do {
 
         // Calculamos St = sum(S)
-        MatrixSum(Sprime,St, ST);
+        Sum(Snew,St, ST);
         // Incializamos la matriz de unos
         Ones(t, ST);
 
@@ -109,22 +109,31 @@ int main(int nArg, char *arg[])
           // t = nt
           MatrixT(ST, 1, nt, t);
           // St = S*t
-          MatrixProduct(CovM, t, St, ST, ST, 1);
+          MatrixProduct(Snew, t, St, ST, ST, 1);
 
           j ++;
 
-        } while(j<10);
+        } while(j<5);
 
         // Calculamos las U(:,i) = t/norm(t)
-        Divide(t, sqrt(DotProd(t, t, ST)), U, ST);
-        UPtr += ST;
+        Divide(t, sqrt(DotProd(t, t, ST)), UPtr, ST);
+
+        // Calculamos las v(:,i) = sqrt(max(St)) * U(:,i)
+        Divide(U, 1/sqrt(maximus(St, ST)), vPtr, ST);
 
         // Calculamos las l(i) = max(St)
         *lPtr = maximus(St, ST);
-        lPtr += ST;
 
-        break;
+        // Redefinimos la matriz de covarianza S = S - v(:,i)*v(:,i)'
+        MatrixT( ST, 1, vPtr, vprime );
+        MatrixProduct( vPtr, vprime, vvp, ST, 1, ST );
+        MatrixSum(CovM, vvp, Snew, ST);
 
+        UPtr += ST;
+        vPtr += ST;
+        lPtr ++;
+
+        j = 0;
         i++;
 
     } while(i<ST);
@@ -133,7 +142,13 @@ int main(int nArg, char *arg[])
     // Declaramos un nuevo vector en el que guardaremos la de transpuesta de S
 
     
-    MatrixShow(1,ST,l);
+    //MatrixShow(1,ST,v);
+    //MatrixShow(1,ST,vprime);
+    printf("La matrix U\n");
+    MatrixShow(ST,ST, U);
+
+    printf("La matrix l\n");
+    MatrixShow(1,ST, l);
 
     return 0;
 }
