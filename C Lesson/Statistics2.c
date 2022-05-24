@@ -136,7 +136,7 @@ double ConditionCheck(double ta[], double td[], int n)
 {
 
     // Definiimos el error
-    double error = 0.00001;
+    double error = 0.00000001;
     
     // Apuntamos
     double* taPtr = ta;
@@ -147,17 +147,15 @@ double ConditionCheck(double ta[], double td[], int n)
     do {
 
         // El posible resultado de r es 0 o 1. Si se cumple (1) si no (0)
-        r = fabs(*tdPtr - *taPtr) <= error;
+        r = fabs(*tdPtr ++ - *taPtr ++) <= error;
         count += r;
-        tdPtr ++;
-        taPtr ++;
 
         i++;
 
-    } while(i<n);
+    } while(i<n && r != 0 );
 
     // Regresamos un valor binario, 1 si son iguales 0 si no
-    return count == sizeof(tdPtr);
+    return count == n;
 
 
 }

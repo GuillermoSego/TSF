@@ -84,7 +84,7 @@ int main(int nArg, char *arg[])
           // Condicion de paro
           k = ConditionCheck(t, nt, ST);
           if (k == 1) {
-          
+            printf("%d\n", j);
             break;
 
           }
@@ -93,15 +93,12 @@ int main(int nArg, char *arg[])
           MatrixT(ST, 1, nt, t);
           // St = S*t
           MatrixProduct(Snew, t, St, ST, ST, 1);
-
           j ++;
 
         } while(j<1000);
 
         // Calculamos las U(:,i) = t/norm(t)
         Divide(t, sqrt(DotProd(t, t, ST)), UPtr, ST);
-
-        k = ConditionCheck(t, nt, ST);
 
         // Calculamos las v(:,i) = sqrt(max(St)) * U(:,i)
         Divide(U, 1/sqrt(maximus(St, ST)), vPtr, ST);
@@ -113,8 +110,8 @@ int main(int nArg, char *arg[])
         MatrixT( ST, 1, vPtr, vprime );
         MatrixProduct( vPtr, vprime, vvp, ST, 1, ST );
         // Copiamos la version de la matriz Snew en Scov
-        Divide(Snew, 1, CovM, ST*ST);
-        MatrixSum(CovM, vvp, Snew, ST);
+        // Divide(Snew, 1, CovM, ST*ST);
+        MatrixSum(Snew, vvp, Snew, ST);
 
         UPtr += ST;
         vPtr += ST;
