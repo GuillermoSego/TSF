@@ -54,10 +54,9 @@ int main(int nArg, char *arg[])
     double U[ST*ST];
     double* UPtr = U;
 
-    double v[ST*ST];
+    double v[ST];
     double vprime[ST];
     double vvp[ST*ST];
-    double* vPtr = v;
 
     double l[ST];
     double* lPtr = l;
@@ -84,7 +83,6 @@ int main(int nArg, char *arg[])
           // Condicion de paro
           k = ConditionCheck(t, nt, ST);
           if (k == 1) {
-            printf("%d\n", j);
             break;
 
           }
@@ -101,20 +99,19 @@ int main(int nArg, char *arg[])
         Divide(t, sqrt(DotProd(t, t, ST)), UPtr, ST);
 
         // Calculamos las v(:,i) = sqrt(max(St)) * U(:,i)
-        Divide(U, 1/sqrt(maximus(St, ST)), vPtr, ST);
+        Divide(UPtr, 1/sqrt(maximus(St, ST)), v, ST);
 
         // Calculamos las l(i) = max(St)
         *lPtr = maximus(St, ST);
 
         // Redefinimos la matriz de covarianza S = S - v(:,i)*v(:,i)'
-        MatrixT( ST, 1, vPtr, vprime );
-        MatrixProduct( vPtr, vprime, vvp, ST, 1, ST );
+        MatrixT( ST, 1, v, vprime );
+        MatrixProduct( v, vprime, vvp, ST, 1, ST );
         // Copiamos la version de la matriz Snew en Scov
         // Divide(Snew, 1, CovM, ST*ST);
         MatrixSum(Snew, vvp, Snew, ST);
 
         UPtr += ST;
-        vPtr += ST;
         lPtr ++;
 
         j = 0;
