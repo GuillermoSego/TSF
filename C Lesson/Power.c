@@ -1,17 +1,17 @@
-// Metodo de potencias
+// Redefinicion del programa 
 
 #include <stdio.h>
 #include <math.h>
 #include "Matrix.h"
 #include "Open.h"
-#include "Statistics.h"
+#include "Statistics2.h"
 
-#define BF 1000
+#define BF 1024
 
 int main(int nArg, char *arg[])
 {
 
-/*
+    /*
  
       Declaramos un vector en el que vamos a guardar los datos.
       Le apuntamos dos veces.
@@ -34,43 +34,19 @@ int main(int nArg, char *arg[])
     // Determinamos la transpuesta
     MatrixT(SA, ST, VecM, DatM);
 
-
-    // Declaramos la matriz de la Covarianza y le apuntamos
-    double CovM[ST*ST];
-    double* CovPtr = CovM;
-    
-    /*
-    Hacemos un apuntador de apuntadores para manejar los datos
-    El unico problema del programa es que para ejecutar el programa hay que 
-    reservar la memoria segun el número de columnas
-    */
-    double* DatPtr[] = {DatM, DatM + SA, DatM + 2*SA, DatM + 3*SA, DatM + 4*SA, 
-    DatM + 5*SA, DatM + 6*SA, DatM + 7*SA, DatM + 8*SA, DatM + 9*SA, DatM + 10*SA,
-    DatM + 11*SA, DatM + 12*SA, DatM + 13*SA, DatM + 14*SA, DatM + 15*SA, DatM + 16*SA,
-    DatM + 17*SA, DatM + 18*SA, DatM + 19*SA};
-
-    // Declaramos un arreglo para las sumas y le apuntamos     
+    // Necesitamos un arreglo donde guardaremos las sumas
     double sum_xM[ST];
-    double* sum_xPtr = sum_xM;
+    // Donde guardaremos la covarianza
+    double CovM[ST*ST];
 
-    // Varianza
-    Variance(sum_xPtr, CovPtr, DatPtr, ST, SA);
+    // Calculamos la matriz de covarianza
+    Variance(sum_xM, CovM, DatM, ST, SA);
+    Covariance(sum_xM, CovM, DatM, ST, SA);
     
-    // Nos cercioramos que estamos apuntando en la dirección correcta
-    DatPtr[ST - 1] = &DatM[0];
-    
-    CovPtr = CovM + 1;
-    sum_xPtr = sum_xM;
+    printf( "La matriz de Covarianza es: \n");
+    MatrixShow(ST,ST, CovM);
 
-
-    // Covarianza 
-    Covariance(sum_xPtr, CovPtr, DatPtr, ST, SA);
-    
-    // En este punto tenemos la matriz de covarianza, ahora hay que calcular el metodo de potencias
-    // printf( "La matriz de Covarianza es: \n");
-    // MatrixShow(ST,ST, CovM);
-
-    // Inicializamos las matrices
+// Inicializamos las matrices
     double St[ST];
     double t[ST];
     double nt[ST];
@@ -90,10 +66,8 @@ int main(int nArg, char *arg[])
     double Snew[ST*ST];
     Divide(CovM, 1, Snew, ST*ST);
 
-    // El error
-    double e = 0.01;
 
-    int i = 0, j = 0; 
+    int i = 0, j = 0, k; 
 
     do {
 
@@ -108,6 +82,12 @@ int main(int nArg, char *arg[])
           Divide(St, maximus(St, ST), nt, ST);
 
           // Condicion de paro
+          k = ConditionCheck(t, nt, ST);
+          if (k == 1) {
+          
+            break;
+
+          }
 
           // t = nt
           MatrixT(ST, 1, nt, t);
@@ -116,10 +96,12 @@ int main(int nArg, char *arg[])
 
           j ++;
 
-        } while(j<5);
+        } while(j<1000);
 
         // Calculamos las U(:,i) = t/norm(t)
         Divide(t, sqrt(DotProd(t, t, ST)), UPtr, ST);
+
+        k = ConditionCheck(t, nt, ST);
 
         // Calculamos las v(:,i) = sqrt(max(St)) * U(:,i)
         Divide(U, 1/sqrt(maximus(St, ST)), vPtr, ST);
@@ -130,6 +112,8 @@ int main(int nArg, char *arg[])
         // Redefinimos la matriz de covarianza S = S - v(:,i)*v(:,i)'
         MatrixT( ST, 1, vPtr, vprime );
         MatrixProduct( vPtr, vprime, vvp, ST, 1, ST );
+        // Copiamos la version de la matriz Snew en Scov
+        Divide(Snew, 1, CovM, ST*ST);
         MatrixSum(CovM, vvp, Snew, ST);
 
         UPtr += ST;

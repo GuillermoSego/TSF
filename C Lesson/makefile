@@ -3,14 +3,14 @@ OBJECT_DIR = .\\build\\Debug
 TARGET_DIR = .\\build
 
 # Target name
-LINK_TARGET = .\build\PowerMethod.exe
+LINK_TARGET = .\build\Power.exe
 
 # Macro with object files
 _OBJS =  \
  Matrix.o \
  Open.o \
- Statistics.o \
- PowerMethod.o \
+ Statistics2.o \
+ Power.o \
 
 OBJS = $(patsubst %,$(OBJECT_DIR)\\%,$(_OBJS))
 
@@ -26,10 +26,10 @@ $(OBJECT_DIR)\\%.o : %.c
 	gcc -g -o $@ -c $<
 
 # Dependency Rules
-$(OBJECT_DIR)\\PowerMethod.o : PowerMethod.c Matrix.h Statistics.h Open.h
+$(OBJECT_DIR)\\Power.o : Power.c Matrix.h Statistics2.h Open.h
 $(OBJECT_DIR)\\Matrix.o : Matrix.c Matrix.h
 $(OBJECT_DIR)\\Open.o : Open.c Open.h Matrix.h
-$(OBJECT_DIR)\\Statistics.o : Statistics.c Statistics.h Matrix.h
+$(OBJECT_DIR)\\Statistics2.o : Statistics2.c Statistics2.h Matrix.h
 
 # Cleaning files
 REBUILDABLES = $(OBJS) $(LINK_TARGET)

@@ -203,7 +203,7 @@ void Initialize(double in[], int n)
 void Sum(double in[], double out[], int n)
 {
 
-  Initialize(out, n*n);
+  Initialize(out, n);
 
   double sum = 0;
   // Apuntamos
