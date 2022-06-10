@@ -24,3 +24,11 @@ void Ones(double t[], int n);
 void Divide(double matrix[], double scalar, double out[], int s);
 
 void MatrixSum(double m1[], double m2[], double mout[], int n);
+
+void PrincipalComponents(double m1[], double m2[], double Matrix[], int M, int N, int O, double sum[]);
+
+void linspace(double x[], double init, double end, int n);
+
+void ConfidenceEllipse(double U[], double l[], double sum[], int ST, int SA);
+
+void PlotPCA(double S[], double U[], double l[], double Dat[], double sum[], int ST, int SA);

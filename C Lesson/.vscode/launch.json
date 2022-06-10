@@ -6,7 +6,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}\\build\\${fileBasenameNoExtension}.exe",
-      "args": [".\\Datos1.csv","0"],
+      "args": [".\\wineData.csv","0"],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [ ],
